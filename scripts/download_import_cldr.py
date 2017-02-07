@@ -99,6 +99,8 @@ def main():
         os.path.join(scripts_path, 'import_cldr.py'),
         common_path])
 
+    os.remove(zip_path)
+    shutil.rmtree(os.path.join(cldr_dl_path, FILENAME.split('.')[0]))
 
 if __name__ == '__main__':
     main()

@@ -5,6 +5,7 @@ import sys
 from distutils.cmd import Command
 
 from setuptools import setup
+from setuptools.command.install import install
 
 try:
     from babel import __version__
@@ -13,18 +14,10 @@ except SyntaxError as exc:
     sys.exit(1)
 
 
-class import_cldr(Command):
-    description = 'imports and converts the CLDR data'
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
+class custom_install(install):
     def run(self):
         subprocess.check_call([sys.executable, 'scripts/download_import_cldr.py'])
+        install.run(self)
 
 
 setup(
@@ -62,8 +55,7 @@ setup(
         'pytz>=0a',
     ],
 
-    cmdclass={'import_cldr': import_cldr},
-
+    cmdclass={'install': custom_install},
     zip_safe=False,
 
     # Note when adding extractors: builtin extractors we also want to
